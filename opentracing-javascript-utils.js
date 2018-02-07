@@ -15,6 +15,19 @@
   };
 
   /**
+   * get current working directory to load getDependencies
+   * FIXME ugly as hell but works for now...
+   */
+  let currentPath = () => {
+    let scripts = Array.from(d.getElementsByTagName("script"));
+    let ix = scripts.findIndex(
+      (s) => s.src.indexOf('opentracing-javascript-utils.js') >= 0
+    )
+    let path = scripts[ix].src.split('opentracing-javascript-utils.js')[0];
+    return path
+  }
+
+  /**
    * OpenTracing Tracer loads dependencies and initializes a global
    * tracer with specified library implementation; defaults to no-op.
    */
@@ -37,7 +50,7 @@
 
         let s = document.createElement('script');
         s.type = 'text/javascript';
-        s.src = `lib/${url}`;
+        s.src = `${currentPath()}/lib/${url}`;
         s.async = true;
 
         s.onload = function() {
