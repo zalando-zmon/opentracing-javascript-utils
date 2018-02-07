@@ -12,7 +12,7 @@ Utilities to add OpenTracing EUMs
 
 ## Example
 
-```
+```html
 <script src="opentracing-javascript-utils.js"></script>
 <script type="text/javascript">
 
