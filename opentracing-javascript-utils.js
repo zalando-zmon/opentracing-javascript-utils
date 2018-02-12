@@ -16,7 +16,6 @@
 
   /**
    * get current working directory to load getDependencies
-   * FIXME ugly as hell but works for now...
    */
   let currentPath = () => {
     let scripts = Array.from(d.getElementsByTagName("script"));
@@ -50,7 +49,7 @@
 
         let s = document.createElement('script');
         s.type = 'text/javascript';
-        s.src = `${currentPath()}/lib/${url}`;
+        s.src = `${currentPath()}lib/${url}`;
         s.async = true;
 
         s.onload = function() {
@@ -89,7 +88,7 @@
     /**
      * Load dependencies and initialize Tracer
      */
-    initOpenTracing({name, config} = { name: 'opentracing' }, resolve, reject) {
+    initOpenTracing(name = 'opentracing', config, resolve, reject) {
       this.config = config;
       let lib = libraries[name];
       return new Promise((resolve, reject) => {
