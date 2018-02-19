@@ -6,11 +6,7 @@
   const libraries = {
     lightstep: {
       class: 'lightstep',
-      src: 'lightstep-tracer.js',
-      deps: [ 'opentracing-browser.min.js' ],
-    },
-    opentracing: {
-      src: 'opentracing-browser.min.js',
+      src: '',        // TODO add CDN url
     }
   };
 
@@ -49,7 +45,7 @@
 
         let s = document.createElement('script');
         s.type = 'text/javascript';
-        s.src = `${currentPath()}lib/${url}`;
+        s.src = url;
         s.async = true;
 
         s.onload = function() {
@@ -68,29 +64,45 @@
      * List of dependencies to load sync
      */
     getDependencies(lib) {
-      if (lib) {
-        this.dependencies = this.dependencies.concat(lib.deps || []);
-        this.dependencies.push(lib.src);
+      if (lib && !w[lib.class]) {
+          this.dependencies.push(lib.src);
       }
-
-      return this.dependencies.map(this.getScript)
+      let d = this.dependencies.map(this.getScript)
+      return d
     }
 
     /**
      * Initializes Global Tracer with Custom library
      */
     initGlobalTracer(lib) {
-      if (lib && lib.class && w[lib.class]) {
+      if (lib && w[lib.class]) {
         opentracing.initGlobalTracer(new w[lib.class].Tracer(this.config));
+      } else {
+        opentracing.initGlobalTracer();
       }
     }
+
+    getTracerPromise(lib, resolve, reject) {
+      return new Promise((resolve, reject) => {
+        this.initGlobalTracer(lib)
+        resolve(opentracing.globalTracer())
+      });
+    }
+
 
     /**
      * Load dependencies and initialize Tracer
      */
-    initOpenTracing(name = 'opentracing', config, resolve, reject) {
-      this.config = config;
+    initOpenTracing({ name = 'opentracing', config = {}}, resolve, reject) {
+
       let lib = libraries[name];
+      this.config = config;
+
+      if (name !== 'opentracing' && !lib) {
+        let m = `Unkown Tracing Library: ${name}. Currently supported: ${Object.keys(libraries)}`;
+        console.log(m);
+      }
+
       return new Promise((resolve, reject) => {
         Promise
         .all(this.getDependencies(lib))
@@ -99,9 +111,12 @@
           resolve(opentracing.globalTracer())
         })
         .catch( (e) => {
-          reject(e)
+          console.log("Can't load Tracing library, defaulting to no-op.", e)
+          this.initGlobalTracer()
+          resolve(opentracing.globalTracer())
         })
       })
+
     }
 
   }

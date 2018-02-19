@@ -3,11 +3,12 @@
 <head>
 
   <!-- OpenTracing -->
-  <script src="opentracing-javascript-utils.js"></script>
+  <script src="opentracing-browser.min.js"></script>
+  <script src="lightstep-tracer.js"></script>
+  <script src="../opentracing-javascript-utils.js"></script>
   <script type="text/javascript">
 
-    let tracer = {};
-    opentracingJavascriptUtils.initOpenTracing({
+    let tracer_config = {
       name: 'lightstep',
       config: {
         xhr_instrumentation: true,
@@ -17,9 +18,11 @@
         collector_port: 443,
         collector_encryption: '',
         verbosity: 1,
-      }})
-      .then(() => {
-        console.log('initialized');
+      }
+    }
+    opentracingJavascriptUtils.initOpenTracing(tracer_config)
+      .then((e) => {
+        console.log('initialized', e);
       }).catch( (e) => {
         console.log('Something went wrong...', e)
       })
