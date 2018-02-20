@@ -93,13 +93,15 @@
     /**
      * Load dependencies and initialize Tracer
      */
-    initOpenTracing({ name = 'opentracing', config = {}}, resolve, reject) {
+    initOpenTracing(tracerConfig, resolve, reject) {
 
-      let lib = libraries[name];
-      this.config = config;
+      this.name = tracerConfig ? tracerConfig.name : 'opentracing'
+      this.config = tracerConfig ? tracerConfig.config : {}
+
+      let lib = libraries[this.name];
 
       if (name !== 'opentracing' && !lib) {
-        let m = `Unkown Tracing Library: ${name}. Currently supported: ${Object.keys(libraries)}`;
+        let m = `Unkown Tracing Library: "${name}". Currently supported: ${Object.keys(libraries)}`;
         console.log(m);
       }
 
