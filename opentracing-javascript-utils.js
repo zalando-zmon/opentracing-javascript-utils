@@ -100,8 +100,8 @@
 
       let lib = libraries[this.name];
 
-      if (name !== 'opentracing' && !lib) {
-        let m = `Unkown Tracing Library: "${name}". Currently supported: ${Object.keys(libraries)}`;
+      if (this.name !== 'opentracing' && !lib) {
+        let m = `Unkown Tracing Library: "${this.name}". Currently supported: ${Object.keys(libraries)}`;
         console.log(m);
       }
 
