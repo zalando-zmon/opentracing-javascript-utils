@@ -3927,6 +3927,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                };
 	                if (url) {
 	                    tags.url_pathname = url.split('?')[0];
+											//Set the operation name of the span
+											var oName = tags.url_pathname.replace('/','_');
+											span.setOperationName(oName);
 	                }
 
 	                var openPayload = {};
@@ -6648,4 +6651,3 @@ return /******/ (function(modules) { // webpackBootstrap
 });
 ;
 //# sourceMappingURL=lightstep-tracer.js.map
-
