@@ -1,0 +1,38 @@
+{
+  "name": "opentracing-javascript-utils",
+  "version": "1.0.0",
+  "description": "Utilities to add OpenTracing to your JS Projects",
+  "main": "opentracing-javascript-utils.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node_modules/.bin/webpack --config webpack.config.js",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zalando-zmon/opentracing-javascript-utils.git"
+  },
+  "keywords": [
+    "opentracing",
+    "javascript"
+  ],
+  "author": "Emanuel Lauria",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/zalando-zmon/opentracing-javascript-utils/issues"
+  },
+  "homepage": "https://github.com/zalando-zmon/opentracing-javascript-utils#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "webpack": "^3.11.0"
+  },
+  "dependencies": {
+    "lightstep-tracer": "^0.20.3",
+    "lodash": "^4.17.5",
+    "opentracing": "^0.14.1",
+    "thrift": "^0.11.0"
+  }
+}
