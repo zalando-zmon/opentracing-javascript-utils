@@ -26,10 +26,14 @@
   },
   "homepage": "https://github.com/zalando-zmon/opentracing-javascript-utils#readme",
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
     "path": "^0.12.7",
     "webpack": "^3.11.0"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "lightstep-tracer": "^0.20.3",
     "lodash": "^4.17.5",
     "opentracing": "^0.14.1",
