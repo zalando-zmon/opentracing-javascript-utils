@@ -1,15 +1,13 @@
 {
   "name": "opentracing-javascript-utils",
   "version": "1.0.0",
-  "description": "Utilities to add OpenTracing to your JS Projects",
-  "main": "opentracing-javascript-utils.js",
+  "description": "Utilities to Instrument your JS code with OpenTracing",
+  "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "start": "node_modules/.bin/webpack --config webpack.config.js",
-    "build": "webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -33,10 +31,6 @@
     "webpack": "^3.11.0"
   },
   "dependencies": {
-    "babel": "^6.23.0",
-    "lightstep-tracer": "^0.20.3",
-    "lodash": "^4.17.5",
-    "opentracing": "^0.14.1",
-    "thrift": "^0.11.0"
+    "opentracing": "^0.14.1"
   }
 }
