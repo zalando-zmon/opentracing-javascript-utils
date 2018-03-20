@@ -1,15 +1,8 @@
 var opentracing = require('opentracing');
+var {libraries} = require('./libraries');
 
 (function component(w, d) {
-  /**
-   * List of supported Opentracing JS Libraries
-   */
-  const libraries = {
-    lightstep: {
-      class: 'lightstep',
-      src: 'https://rawgit.com/lightstep/lightstep-tracer-javascript/v0.20.3/dist/lightstep-tracer.min.js',
-    }
-  };
+  console.log('libraries', libraries)
 
   /**
    * get current working directory to load getDependencies
