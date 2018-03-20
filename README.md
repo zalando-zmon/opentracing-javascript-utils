@@ -1,6 +1,6 @@
 # OpenTracing JavaScript Utils
 
-Utilities to add OpenTracing EUMs
+Utilities to Instrument JavaScript Web Applications with OpenTracing.
 
 ### Early stage
 
