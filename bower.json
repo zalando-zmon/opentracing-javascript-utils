@@ -1,0 +1,21 @@
+{
+  "name": "opentracing-javascript-utils",
+  "description": "Utilities to Instrument your JS code with OpenTracing",
+  "main": "index.js",
+  "authors": [
+    "Emanuel Lauria"
+  ],
+  "license": "Apache-2.0",
+  "keywords": [
+    "opentracing",
+    "javascript"
+  ],
+  "homepage": "https://github.com/zalando-zmon/opentracing-javascript-utils",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
