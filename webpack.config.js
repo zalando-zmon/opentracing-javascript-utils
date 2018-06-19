@@ -15,21 +15,8 @@ switch(CONFIG) {
     defines.DEBUG = true;
     devtool = 'source-map';
     break;
-  case 'prod':
-    // plugins.push(new webpack.optimize.OccurenceOrderPlugin());
-    // plugins.push(new webpack.optimize.UglifyJsPlugin({
-    //     minimize: true,
-    //     compress : {
-    //         dead_code : true,
-    //         unused : true,
-    //         warnings  : false,
-    //     }
-    // }));
-    // plugins.push(new webpack.optimize.DedupePlugin());
-    break;
   default:
-    console.error('Unexpected BUILD_CONFIG!');
-    process.exit(1);
+    break;
 }
 
 var bundleName = 'opentracing-javascript-utils' + bundleSuffix;
