@@ -720,41 +720,19 @@ var _require = __webpack_require__(12),
        * List of dependencies to load sync
        */
       value: function getDependencies(lib) {
+        var _this = this;
+
         if (lib && !w[lib.class]) {
-          this.dependencies.push(lib.src);
+          if (lib.src && Array.isArray(lib.src)) {
+            lib.src.forEach(function (s) {
+              return _this.dependencies.push(s);
+            });
+          } else {
+            this.dependencies.push(lib.src);
+          }
         }
         var d = this.dependencies.map(this.getScript);
         return d;
-      }
-
-      /**
-       * Initializes Global Tracer with Custom library
-       */
-
-    }, {
-      key: 'initGlobalTracer',
-      value: function initGlobalTracer(lib) {
-        if (lib && w[lib.class]) {
-          w.customTracer = new w[lib.class].Tracer(this.config);
-          opentracing.initGlobalTracer(w.customTracer);
-        } else {
-          opentracing.initGlobalTracer();
-        }
-      }
-    }, {
-      key: 'getTracerPromise',
-      value: function getTracerPromise(lib, resolve, reject) {
-        var _this = this;
-
-        return new Promise(function (resolve, reject) {
-          _this.initGlobalTracer(lib);
-          resolve(opentracing.globalTracer());
-        });
-      }
-    }, {
-      key: 'getCustomTracer',
-      value: function getCustomTracer() {
-        return w.customTracer;
       }
 
       /**
@@ -766,23 +744,21 @@ var _require = __webpack_require__(12),
       value: function initOpenTracing(tracerConfig, resolve, reject) {
         var _this2 = this;
 
-        this.name = tracerConfig ? tracerConfig.name : 'opentracing';
-        this.config = tracerConfig ? tracerConfig.config : {};
+        var lib = libraries[tracerConfig.name] || libraries['opentracing'];
 
-        var lib = libraries[this.name];
-
-        if (this.name !== 'opentracing' && !lib) {
-          var m = 'Unkown Tracing Library: "' + this.name + '". Currently supported: ' + Object.keys(libraries);
+        if (!libraries[tracerConfig.name]) {
+          var m = 'Unkown Tracing Library: "' + tracerConfig.name + '". Currently supported: ' + Object.keys(libraries);
           console.log(m);
         }
 
         return new Promise(function (resolve, reject) {
           Promise.all(_this2.getDependencies(lib)).then(function () {
-            _this2.initGlobalTracer(lib);
+            var customTracer = lib.getCustomTracer(tracerConfig);
+            opentracing.initGlobalTracer(customTracer);
             resolve(opentracing.globalTracer());
           }).catch(function (e) {
             console.log("Can't load Tracing library, defaulting to no-op.", e);
-            _this2.initGlobalTracer();
+            opentracing.initGlobalTracer();
             resolve(opentracing.globalTracer());
           });
         });
@@ -1047,9 +1023,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var libraries = exports.libraries = {
+  opentracing: {
+    class: 'opentracing',
+
+    src: [],
+
+    getCustomTracer: function () {}
+  },
   lightstep: {
+
     class: 'lightstep',
-    src: 'https://rawgit.com/lightstep/lightstep-tracer-javascript/v0.20.3/dist/lightstep-tracer.min.js'
+
+    src: ['https://rawgit.com/lightstep/lightstep-tracer-javascript/v0.20.3/dist/lightstep-tracer.min.js', 'https://rawgit.com/lightstep/lightstep-overlay/v1.1.4/dist/lightstep-overlay.min.js'],
+
+    getCustomTracer: function (config) {
+      var customTracer = new lightstep.Tracer(config.config);
+
+      if (config.overlay) {
+        console.log('Initializing Lightstep Overlay');
+        LightStepOverlay(customTracer);
+      }
+
+      return customTracer;
+    }
   }
 };
 

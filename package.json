@@ -1,6 +1,6 @@
 {
   "name": "opentracing-javascript-utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Utilities to Instrument your JS code with OpenTracing",
   "main": "index.js",
   "unpkg": "dist/opentracing-javascript-utils.min.js",

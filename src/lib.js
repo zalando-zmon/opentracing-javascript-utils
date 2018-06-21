@@ -59,33 +59,14 @@ var {libraries} = require('./libraries');
      */
     getDependencies(lib) {
       if (lib && !w[lib.class]) {
+        if (lib.src && Array.isArray(lib.src)) {
+          lib.src.forEach((s) => this.dependencies.push(s))
+        } else {
           this.dependencies.push(lib.src);
+        }
       }
       let d = this.dependencies.map(this.getScript)
       return d
-    }
-
-    /**
-     * Initializes Global Tracer with Custom library
-     */
-    initGlobalTracer(lib) {
-      if (lib && w[lib.class]) {
-        w.customTracer = new w[lib.class].Tracer(this.config);
-        opentracing.initGlobalTracer(w.customTracer);
-      } else {
-        opentracing.initGlobalTracer();
-      }
-    }
-
-    getTracerPromise(lib, resolve, reject) {
-      return new Promise((resolve, reject) => {
-        this.initGlobalTracer(lib)
-        resolve(opentracing.globalTracer())
-      });
-    }
-
-    getCustomTracer() {
-      return w.customTracer;
     }
 
 
@@ -94,13 +75,10 @@ var {libraries} = require('./libraries');
      */
     initOpenTracing(tracerConfig, resolve, reject) {
 
-      this.name = tracerConfig ? tracerConfig.name : 'opentracing'
-      this.config = tracerConfig ? tracerConfig.config : {}
+      let lib = libraries[tracerConfig.name] || libraries['opentracing']
 
-      let lib = libraries[this.name];
-
-      if (this.name !== 'opentracing' && !lib) {
-        let m = `Unkown Tracing Library: "${this.name}". Currently supported: ${Object.keys(libraries)}`;
+      if (!libraries[tracerConfig.name]) {
+        let m = `Unkown Tracing Library: "${tracerConfig.name}". Currently supported: ${Object.keys(libraries)}`;
         console.log(m);
       }
 
@@ -108,12 +86,13 @@ var {libraries} = require('./libraries');
         Promise
         .all(this.getDependencies(lib))
         .then( () => {
-          this.initGlobalTracer(lib)
+          let customTracer = lib.getCustomTracer(tracerConfig)
+          opentracing.initGlobalTracer(customTracer)
           resolve(opentracing.globalTracer())
         })
         .catch( (e) => {
           console.log("Can't load Tracing library, defaulting to no-op.", e)
-          this.initGlobalTracer()
+          opentracing.initGlobalTracer()
           resolve(opentracing.globalTracer())
         })
       })
