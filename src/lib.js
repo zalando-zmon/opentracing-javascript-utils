@@ -70,7 +70,8 @@ var {libraries} = require('./libraries');
      */
     initGlobalTracer(lib) {
       if (lib && w[lib.class]) {
-        opentracing.initGlobalTracer(new w[lib.class].Tracer(this.config));
+        w.customTracer = new w[lib.class].Tracer(this.config);
+        opentracing.initGlobalTracer(w.customTracer);
       } else {
         opentracing.initGlobalTracer();
       }
@@ -81,6 +82,10 @@ var {libraries} = require('./libraries');
         this.initGlobalTracer(lib)
         resolve(opentracing.globalTracer())
       });
+    }
+
+    getCustomTracer() {
+      return w.customTracer;
     }
 
 
