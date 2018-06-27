@@ -4,6 +4,7 @@ var {libraries} = require('./libraries');
 (function component(w, d) {
   console.log('libraries', libraries)
 
+  w.opentracing = opentracing
   /**
    * get current working directory to load getDependencies
    */
