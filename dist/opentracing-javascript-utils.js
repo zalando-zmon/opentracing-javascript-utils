@@ -657,6 +657,7 @@ var _require = __webpack_require__(12),
 (function component(w, d) {
   console.log('libraries', libraries);
 
+  w.opentracing = opentracing;
   /**
    * get current working directory to load getDependencies
    */
@@ -1040,8 +1041,8 @@ var libraries = exports.libraries = {
       var customTracer = new lightstep.Tracer(config.config);
 
       if (config.overlay) {
-        console.log('Initializing Lightstep Overlay');
         LightStepOverlay(customTracer);
+        console.log('Lightstep Overlay enabled');
       }
 
       return customTracer;
