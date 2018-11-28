@@ -3,6 +3,9 @@
   "version": "1.0.6",
   "description": "Utilities to Instrument your JS code with OpenTracing",
   "main": "index.js",
+  "publishConfig" : {
+    "registry" : "https://maven.zalando.net/repository/npm-internal/"
+  },
   "unpkg": "dist/opentracing-javascript-utils.min.js",
   "directories": {
     "lib": "lib"
